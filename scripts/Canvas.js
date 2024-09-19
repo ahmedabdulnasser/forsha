@@ -1,8 +1,17 @@
 import { pickr } from "./ColorPicker.js";
 export class Canvas {
-  constructor(canvasElement, downloadBtn, strokeBtn, strokeText, colorText) {
+  constructor(
+    canvasElement,
+    downloadBtn,
+    strokeBtn,
+    strokeText,
+    colorText,
+    eraseBtn,
+    eraseText
+  ) {
     this.canvas = canvasElement;
     this.canvas.style.backgroundColor = "white";
+    this.canvas.style.cursor = "crosshair";
     this.context = this.canvas.getContext("2d");
     this.isDrawing = false;
     this.x = 0;
@@ -32,6 +41,10 @@ export class Canvas {
     this.canvas.addEventListener("mouseup", () => {
       this.stopDrawing();
       this.currentState = this.saveCanvasData();
+      if (!this.isErasing) {
+        this.prevColor = this.currentColor;
+        this.prevLineWidth = this.currentLineWidth;
+      }
     }); // Settings-Relevant events
 
     downloadBtn.addEventListener("click", () => {
@@ -41,6 +54,25 @@ export class Canvas {
       this.strokeClickCount = (this.strokeClickCount + 1) % 11 || 1;
       this.setLineWidth(this.strokeClickCount);
       strokeText.innerText = `${this.currentLineWidth} px`;
+    });
+    eraseBtn.addEventListener("click", () => {
+      if (this.canvas.style.cursor === "crosshair") {
+        this.isErasing = true;
+        this.canvas.style.cursor = "grabbing";
+        this.setLineColor("#ffffff");
+        this.setLineWidth(10);
+        eraseBtn.src = "./assets/icons/pencil.svg";
+        eraseText.innerText = "Paint";
+        this.resizeCanvas(this.currentState);
+      } else {
+        this.isErasing = false;
+        this.canvas.style.cursor = "crosshair";
+        this.setLineColor(this.prevColor);
+        this.setLineWidth(this.prevLineWidth);
+        eraseBtn.src = "./assets/icons/eraser.svg";
+        eraseText.innerText = "Erase";
+        this.resizeCanvas(this.currentState);
+      }
     });
 
     pickr.on("change", (color, instance) => {
@@ -77,11 +109,24 @@ export class Canvas {
     this.currentColor = color;
     this.resizeCanvas(this.currentState);
   }
+  setToEraseMode() {
+    this.currentColor = "white";
+    this.resizeCanvas(this.currentState);
+  }
 
   downloadCanvas() {
+    const tempCanvas = document.createElement("canvas");
+    const tempContext = tempCanvas.getContext("2d");
+    tempCanvas.width = this.canvas.width;
+    tempCanvas.height = this.canvas.height;
+
+    tempContext.fillStyle = "#ffffff";
+    tempContext.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+    tempContext.drawImage(this.canvas, 0, 0);
+
     const link = document.createElement("a");
-    link.download = "new_painting.png";
-    link.href = this.canvas.toDataURL();
+    link.download = "new-sketch.jpg";
+    link.href = tempCanvas.toDataURL("image/jpeg");
     link.click();
   }
 

@@ -46,7 +46,8 @@ body {
 }
 .stroke-text,
 .color-text,
-.download-text {
+.download-text,
+.erase-text {
   position: absolute;
   /* width: 100%; */
   white-space: nowrap;
