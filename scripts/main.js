@@ -8,6 +8,3 @@ const newCanvas = new Canvas(
   document.querySelector(".erase-btn"),
   document.querySelector(".erase-text")
 );
-let testErase = () => {
-  newCanvas.setToEraseMode();
-};
