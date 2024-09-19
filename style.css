@@ -1,0 +1,54 @@
+* {
+  padding: 0;
+  margin: 0;
+  font-family: sans-serif;
+}
+body {
+  background-color: lightgray;
+}
+.canvas-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+.utils-bar {
+  width: 100%;
+  height: 4rem;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  border-bottom: 1px solid lightgray;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 0 10px;
+}
+.utils-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: 40px;
+}
+.logo {
+  height: 50px;
+}
+.util {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+.color-picker-container,
+.download-container,
+.stroke-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.stroke-text,
+.color-text,
+.download-text {
+  position: absolute;
+  /* width: 100%; */
+  white-space: nowrap;
+  top: 95%;
+}

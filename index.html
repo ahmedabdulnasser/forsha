@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/monolith.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/nano.min.css"
+    />
+    <link
+      rel="shortcut icon"
+      href="/assets/icons/favico.png"
+      type="image/png"
+    />
+    <title>forsha - Your home of scribbles!</title>
+  </head>
+  <body>
+    <section class="utils-bar">
+      <img class="logo" src="/assets/img/logo2.png" alt="Logo" />
+      <div class="utils-container">
+        <div class="stroke-container">
+          <img
+            class="stroke-btn util"
+            src="/assets/icons/stroke.svg"
+            alt="Save your painting"
+          />
+          <p class="stroke-text">1px</p>
+        </div>
+        <div class="color-picker-container">
+          <div class="color-picker"></div>
+          <p class="color-text">#000000</p>
+        </div>
+        <div class="download-container">
+          <img
+            class="download-btn util"
+            src="/assets/icons/download.svg"
+            alt="Save your painting"
+          />
+          <p class="download-text">Save</p>
+        </div>
+      </div>
+    </section>
+    <div class="canvas-container">
+      <canvas class="canvas"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.es5.min.js"></script>
+    <script src="/scripts/main.js" type="module"></script>
+  </body>
+</html>
