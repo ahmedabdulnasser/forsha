@@ -56,23 +56,7 @@ export class Canvas {
       strokeText.innerText = `${this.currentLineWidth} px`;
     });
     eraseBtn.addEventListener("click", () => {
-      if (this.canvas.style.cursor === "crosshair") {
-        this.isErasing = true;
-        this.canvas.style.cursor = "grabbing";
-        this.setLineColor("#ffffff");
-        this.setLineWidth(10);
-        eraseBtn.src = "./assets/icons/pencil.svg";
-        eraseText.innerText = "Paint";
-        this.resizeCanvas(this.currentState);
-      } else {
-        this.isErasing = false;
-        this.canvas.style.cursor = "crosshair";
-        this.setLineColor(this.prevColor);
-        this.setLineWidth(this.prevLineWidth);
-        eraseBtn.src = "./assets/icons/eraser.svg";
-        eraseText.innerText = "Erase";
-        this.resizeCanvas(this.currentState);
-      }
+      this.toggleEraser(eraseBtn, eraseText);
     });
 
     pickr.on("change", (color, instance) => {
@@ -109,9 +93,23 @@ export class Canvas {
     this.currentColor = color;
     this.resizeCanvas(this.currentState);
   }
-  setToEraseMode() {
-    this.currentColor = "white";
-    this.resizeCanvas(this.currentState);
+
+  toggleEraser(eraseBtn, eraseText) {
+    if (!this.isErasing) {
+      this.isErasing = true;
+      this.canvas.style.cursor = "grabbing";
+      this.currentColor = "white";
+      this.setLineWidth(15);
+      eraseBtn.src = "./assets/icons/pencil.svg";
+      eraseText.innerText = "Paint";
+    } else {
+      this.isErasing = false;
+      this.canvas.style.cursor = "crosshair";
+      this.setLineColor(this.prevColor);
+      this.setLineWidth(this.prevLineWidth);
+      eraseBtn.src = "./assets/icons/eraser.svg";
+      eraseText.innerText = "Erase";
+    }
   }
 
   downloadCanvas() {
