@@ -7,7 +7,9 @@ export class Canvas {
     strokeText,
     colorText,
     eraseBtn,
-    eraseText
+    eraseText,
+    undoBtn,
+    redoBtn
   ) {
     this.canvas = canvasElement;
     this.canvas.style.backgroundColor = "white";
@@ -18,6 +20,8 @@ export class Canvas {
     this.y = 0;
     this.currentState = this.saveCanvasData();
     this.strokeClickCount = 1;
+    this.canvasStates = [];
+    this.recentlyDeletedStates = [];
     // Sets canvas to full screen - do not add settings before
     this.fitCanvasSize();
     // Default Settings
@@ -58,6 +62,12 @@ export class Canvas {
     eraseBtn.addEventListener("click", () => {
       this.toggleEraser(eraseBtn, eraseText);
     });
+    undoBtn.addEventListener("click", () => {
+      this.undo();
+    });
+    redoBtn.addEventListener("click", () => {
+      this.redo();
+    });
 
     pickr.on("change", (color, instance) => {
       this.setLineColor("#" + color.toHEXA().join(""));
@@ -73,6 +83,7 @@ export class Canvas {
   }
   draw(e) {
     if (!this.isDrawing) return;
+    this.context.beginPath();
     this.context.moveTo(this.x, this.y);
     this.context.lineTo(e.offsetX, e.offsetY);
     this.context.strokeStyle = this.currentColor;
@@ -80,7 +91,48 @@ export class Canvas {
     this.context.stroke();
     this.x = e.offsetX;
     this.y = e.offsetY;
+    this.canvasStates.push(
+      this.context.getImageData(0, 0, this.canvas.width, this.canvas.height)
+    );
   }
+
+  undo() {
+    if (this.canvasStates === 0) return;
+    console.log(this.canvasStates);
+    this.recentlyDeletedStates.push(this.canvasStates.pop());
+    const canvasLastState = this.canvasStates.at(-1);
+    this.context.putImageData(canvasLastState, 0, 0);
+    this.currentState = this.saveCanvasData();
+  }
+  redo() {
+    if (this.recentlyDeletedStates === 0) return;
+    const canvasLastState = this.recentlyDeletedStates.at(-1);
+    this.context.putImageData(canvasLastState, 0, 0);
+    this.currentState = this.saveCanvasData();
+    this.canvasStates.push(
+      this.context.getImageData(0, 0, this.canvas.width, this.canvas.height)
+    );
+    this.recentlyDeletedStates.pop();
+  }
+
+  clearCanvas() {
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+  redraw() {
+    this.lines.forEach((line, index) => {
+      if (index < this.lines.length - 1) {
+        this.context.beginPath();
+        this.context.moveTo(line.startX, line.startY);
+        this.context.lineTo(line.endX, line.endY);
+        this.setLineColor(line.strokeStyle);
+        this.setLineWidth(line.lineWidth);
+        this.context.stroke();
+        line.startX = line.endX;
+        line.startY = line.endY;
+      }
+    });
+  }
+
   stopDrawing() {
     this.isDrawing = false;
   }

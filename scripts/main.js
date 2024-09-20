@@ -6,5 +6,7 @@ const newCanvas = new Canvas(
   document.querySelector(".stroke-text"),
   document.querySelector(".color-text"),
   document.querySelector(".erase-btn"),
-  document.querySelector(".erase-text")
+  document.querySelector(".erase-text"),
+  document.querySelector(".undo-btn"),
+  document.querySelector(".redo-btn")
 );

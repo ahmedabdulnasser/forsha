@@ -28,6 +28,7 @@ body {
   width: 100%;
   justify-content: center;
   gap: 40px;
+  flex-wrap: nowrap;
 }
 .logo {
   height: 50px;
@@ -39,7 +40,10 @@ body {
 }
 .color-picker-container,
 .download-container,
-.stroke-container {
+.stroke-container,
+.erase-container,
+.undo-container,
+.redo-container {
   position: relative;
   display: flex;
   justify-content: center;
@@ -47,7 +51,9 @@ body {
 .stroke-text,
 .color-text,
 .download-text,
-.erase-text {
+.erase-text,
+.undo-text,
+.redo-text {
   position: absolute;
   /* width: 100%; */
   white-space: nowrap;
