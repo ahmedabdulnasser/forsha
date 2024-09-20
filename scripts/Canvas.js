@@ -91,13 +91,19 @@ export class Canvas {
     this.context.stroke();
     this.x = e.offsetX;
     this.y = e.offsetY;
-    this.canvasStates.push(
-      this.context.getImageData(0, 0, this.canvas.width, this.canvas.height)
-    );
+    if (this.currentColor === "white") {
+      this.recentlyDeletedStates.push(
+        this.context.getImageData(0, 0, this.canvas.width, this.canvas.height)
+      );
+    } else {
+      this.canvasStates.push(
+        this.context.getImageData(0, 0, this.canvas.width, this.canvas.height)
+      );
+    }
   }
 
   undo() {
-    if (this.canvasStates === 0) return;
+    if (this.canvasStates.length === 0) return;
     console.log(this.canvasStates);
     this.recentlyDeletedStates.push(this.canvasStates.pop());
     const canvasLastState = this.canvasStates.at(-1);
@@ -105,7 +111,8 @@ export class Canvas {
     this.currentState = this.saveCanvasData();
   }
   redo() {
-    if (this.recentlyDeletedStates === 0) return;
+    console.log(this.recentlyDeletedStates);
+    if (this.recentlyDeletedStates.length === 0) return;
     const canvasLastState = this.recentlyDeletedStates.at(-1);
     this.context.putImageData(canvasLastState, 0, 0);
     this.currentState = this.saveCanvasData();
